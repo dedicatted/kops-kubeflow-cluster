@@ -1,4 +1,4 @@
-# Prepare orchestration instance
+# 1. Prepare orchestration instance
 Go to AWS Console -> IAM -> Roles and create ec2 role "KopsOrchestrator" with following permissions
 
 - AmazonEC2FullAccess
@@ -13,7 +13,7 @@ Go to AWS Console -> IAM -> Roles and create ec2 role "KopsOrchestrator" with fo
 - add security group for ssh access from you pc
 
 
-# Kubernetes cluster with kops and AWS
+# 2. Kubernetes cluster with kops and AWS
 
     sudo yum update
 ### Kops
@@ -70,7 +70,7 @@ You can continue if you see something like that "Your cluster <your_cluster_name
     mkdir -p ${HOME}/bin
     tar -xvf /tmp/$KS_PKG.tar.gz -C ${HOME}/bin
 
-# Kubeflow
+# 3. Kubeflow
     export KUBEFLOW_SRC=/home/ec2-user/kubeflow
     export KUBEFLOW_TAG=v0.3.1
     export KFAPP=${KUBEFLOW_SRC}/app
