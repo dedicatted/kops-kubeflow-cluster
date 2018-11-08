@@ -48,8 +48,8 @@ Go to AWS Console -> IAM -> Roles and create ec2 role "KopsOrchestrator" with fo
     --zones us-east-1a \
     --master-count 1 \
     --node-count 2 \
-    --node-size t2.micro \
-    --master-size t2.micro \
+    --node-size t2.small \
+    --master-size t2.small \
     ${NAME}
 
     kops create secret --name ${NAME} sshpublickey admin -i ~/.ssh/id_rsa.pub
