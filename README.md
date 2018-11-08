@@ -40,7 +40,7 @@ Go to AWS Console -> IAM -> Roles and create ec2 role "KopsOrchestrator" with fo
 ### Create ssh key if need (key admin)
     cd ~/.ssh/
     ssh-keygen
-    eval $(ssh-agent -s) && ssh-add ~/.ssh/key
+    eval $(ssh-agent -s) && ssh-add ~/.ssh/id_rsa
 
 ### Creating cluster
     kops create cluster \
