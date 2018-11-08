@@ -1,33 +1,50 @@
+# Prepare orchestration instance
+Go to AWS Console -> IAM -> Roles and create ec2 role "KopsOrchestrator" with following permissions
+
+- AmazonEC2FullAccess
+- AmazonRoute53FullAccess
+- AmazonS3FullAccess
+- IAMFullAccess
+- AmazonVPCFullAccess
+
+### Create instance
+- set AWS linux OS to have aws cli on a board
+- set KopsOrchestrator role on Step 3: Configure Instance Details
+- add security group for ssh access from you pc
+
+
+# Kubernetes cluster with kops and AWS
+
     sudo yum update
-# Kops
+### Kops
 ___
     wget -O kops https://github.com/kubernetes/kops/releases/download/$(curl -s https://api.github.com/repos/kubernetes/kops/releases/latest | grep tag_name | cut -d '"' -f 4)/kops-linux-amd64
     chmod +x ./kops
     sudo mv ./kops /usr/local/bin/
-# Kubectl
+### Kubectl
 ___
     wget -O kubectl https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
     chmod +x ./kubectl
     sudo mv ./kubectl /usr/local/bin/kubectl
 
-#At this step, you need to specify a different name for "CLUSTER_NAME="
+### At this step, you need to specify a different name for "CLUSTER_NAME="
 
     export CLUSTER_NAME=kops-kubeflow-cluster
     export NAME=${CLUSTER_NAME}.k8s.local
     export KOPS_STATE_STORE=s3://${CLUSTER_NAME}
 
-# Create S3 bucket
+### Create S3 bucket
     aws s3api create-bucket \
     --bucket ${CLUSTER_NAME} \
     --region us-east-1
 
 
-# Create ssh key if need (key admin)
+### Create ssh key if need (key admin)
     cd ~/.ssh/
     ssh-keygen
     eval $(ssh-agent -s) && ssh-add ~/.ssh/key
 
-# Creating cluster
+### Creating cluster
     kops create cluster \
     --state ${KOPS_STATE_STORE} \
     --zones us-east-1a \
@@ -39,12 +56,12 @@ ___
 
     kops create secret --name ${NAME} sshpublickey admin -i ~/.ssh/id_rsa.pub
     kops update cluster ${NAME} --yes
-# Wait 10 minutes and use this command
+### Wait 10 minutes and use this command
     kops validate cluster
 If you see an error after executing the command, wait a few minutes and try again.
 You can continue if you see something like that "Your cluster <your_cluster_name> is ready"
 
-# ksonet
+### ksonet
     export KS_VER=0.12.0
     export KS_PKG=ks_${KS_VER}_linux_amd64
     export PATH=$PATH:${HOME}/bin/$KS_PKG
